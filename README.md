@@ -7,6 +7,16 @@ Built with a **React (Vite)** frontend and an **ASP.NET Core 8** REST API backed
 
 ---
 
+## 📸 Screenshots
+
+| Login | Admin Dashboard |
+|---|---|
+| ![Login](docs/login.png) | ![Dashboard](docs/dashboard.png) |
+
+| Inventory Management | Pharmacy Network |
+|---|---|
+| ![Inventory](docs/inventory.png) | ![Pharmacy Network](docs/pharmacy-network.png) |
+
 ## 🛠️ Tech stack
 
 | Layer | Tech |
