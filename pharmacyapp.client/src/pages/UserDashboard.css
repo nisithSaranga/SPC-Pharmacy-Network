@@ -1,0 +1,171 @@
+﻿.user-dashboard-bg {
+    min-height: 100vh;
+    background: linear-gradient(120deg, #eaf4fb 0%, #fafdff 100%);
+    display: flex;
+    flex-direction: column;
+}
+
+.user-dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    box-shadow: 0 2px 12px 0 rgba(36,80,184,0.09);
+    padding: 22px 40px 22px 28px;
+}
+
+.dashboard-logo {
+    width: 44px;
+    margin-right: 18px;
+    vertical-align: middle;
+}
+
+.welcome-text {
+    font-size: 1.18rem;
+    color: #205086;
+    font-weight: 700;
+    margin-left: 12px;
+}
+
+.logout-btn {
+    padding: 0.55rem 1.45rem;
+    background: #ff5858;
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: background 0.18s;
+}
+
+    .logout-btn:hover,
+    .logout-btn:focus {
+        background: #d32f2f;
+    }
+
+.user-dashboard-cards-row {
+    display: flex;
+    gap: 32px;
+    margin: 50px 0 0 0;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.user-dashboard-card {
+    background: #fff;
+    padding: 30px 32px 25px 32px;
+    border-radius: 17px;
+    box-shadow: 0 4px 24px 0 rgba(36,80,184,0.10), 0 1.5px 7px 0 rgba(0,0,0,0.04);
+    min-width: 280px;
+    max-width: 340px;
+    flex: 1 1 310px;
+    margin-bottom: 18px;
+    cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.18s;
+}
+
+    .user-dashboard-card:hover {
+        box-shadow: 0 6px 30px 0 rgba(36,80,184,0.14);
+        transform: translateY(-2px) scale(1.016);
+    }
+
+.card-title {
+    font-size: 1.24rem;
+    color: #2865c6;
+    font-weight: 700;
+    margin-bottom: 11px;
+}
+
+/* Orders table, search, etc. */
+.orders-table {
+    margin-top: 12px;
+    overflow-x: auto;
+}
+
+    .orders-table table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.98rem;
+    }
+
+    .orders-table th, .orders-table td {
+        padding: 7px 10px;
+        text-align: left;
+        border-bottom: 1px solid #e9ecf2;
+    }
+
+    .orders-table th {
+        background: #f2f6fc;
+        color: #225288;
+    }
+
+    .orders-table tr:last-child td {
+        border-bottom: none;
+    }
+
+.drug-result {
+    margin-bottom: 9px;
+    background: #f3f9fe;
+    padding: 7px 11px;
+    border-radius: 7px;
+    font-size: 0.98rem;
+}
+
+/* Modal Styles */
+.modal-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(56, 69, 110, 0.16);
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 2.2rem 1.8rem 2rem 1.8rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 24px 0 rgba(36,80,184,0.13);
+    min-width: 340px;
+    max-width: 95vw;
+    position: relative;
+}
+
+.close-modal-btn {
+    position: absolute;
+    top: 13px;
+    right: 20px;
+    font-size: 1.7rem;
+    color: #334e6f;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Responsive for mobile */
+@media (max-width: 700px) {
+    .user-dashboard-header {
+        flex-direction: column;
+        gap: 14px;
+        padding: 18px 6px 18px 8px;
+    }
+
+    .user-dashboard-cards-row {
+        flex-direction: column;
+        gap: 18px;
+        margin: 28px 0 0 0;
+    }
+
+    .user-dashboard-card {
+        min-width: 90vw;
+        max-width: 100vw;
+        padding: 20px 8px;
+    }
+}

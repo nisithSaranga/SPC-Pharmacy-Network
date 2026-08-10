@@ -1,0 +1,331 @@
+﻿.inventory-main-bg {
+    background: #f6faff;
+    min-height: 100vh;
+    padding: 40px 0 0 0;
+}
+
+/* Header row with Add/Delete buttons */
+.inventory-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto 24px auto;
+    max-width: 850px;
+    padding: 0 18px;
+}
+
+.inventory-title {
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: #183354;
+    margin: 0;
+}
+
+/* Action button row (Add + Delete) */
+.inventory-action-row {
+    display: flex;
+    gap: 12px;
+}
+
+.add-drug-btn,
+.delete-drug-btn {
+    padding: 10px 24px;
+    background: #2263db;
+    color: #fff;
+    font-size: 1.02rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 1px 5px 0 #0001;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+    .add-drug-btn:hover,
+    .delete-drug-btn:hover {
+        background: #174da3;
+    }
+
+.delete-drug-btn {
+    background: #ff5050;
+}
+
+    .delete-drug-btn:hover {
+        background: #d63535;
+    }
+
+.back-home-btn {
+    padding: 10px 22px;
+    background: #2263db;
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background 0.18s;
+}
+
+    .back-home-btn:hover {
+        background: #174da3;
+    }
+
+
+/* Inventory card */
+.inventory-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 3px 16px #2263db11;
+    padding: 28px 26px;
+    max-width: 850px;
+    margin: 0 auto;
+    min-height: 300px;
+}
+
+.inventory-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 10px;
+}
+
+    .inventory-table th,
+    .inventory-table td {
+        padding: 13px 10px;
+        text-align: left;
+    }
+
+    .inventory-table th {
+        background: #f0f4fa;
+        font-size: 1.06rem;
+        color: #183354;
+        font-weight: 700;
+        border-bottom: 2px solid #e1e7f2;
+    }
+
+    .inventory-table tr {
+        border-radius: 14px;
+        background: #fff;
+    }
+
+        .inventory-table tr:not(:last-child) {
+            border-bottom: 1px solid #e5eaf2;
+        }
+
+    .inventory-table td {
+        font-size: 1.02rem;
+        color: #234;
+    }
+
+/* Loading */
+.loading-msg {
+    font-size: 1.07rem;
+    color: #555;
+    text-align: center;
+    margin: 38px 0;
+}
+
+/* Modal overlay */
+.modal-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #181a2530;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Modal box */
+.modal-content {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 8px 30px #2263db1a;
+    padding: 34px 30px 26px 30px;
+    min-width: 330px;
+    max-width: 380px;
+    position: relative;
+}
+
+.close-modal-btn {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    font-size: 1.8rem;
+    color: #aaa;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: color 0.16s;
+}
+
+    .close-modal-btn:hover {
+        color: #2263db;
+    }
+
+/* Add Drug Form */
+.add-drug-form .form-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 13px;
+}
+
+.add-drug-form .form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.add-drug-form label {
+    font-size: 1rem;
+    color: #234;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.add-drug-form input {
+    padding: 7px 10px;
+    border: 1px solid #d3e0ef;
+    border-radius: 7px;
+    font-size: 1rem;
+}
+
+    .add-drug-form input:focus {
+        outline: 2px solid #2263db22;
+    }
+
+.add-drug-form .form-submit-row {
+    margin-top: 18px;
+    text-align: right;
+}
+
+.add-drug-form .submit-btn {
+    padding: 9px 20px;
+    background: #2263db;
+    color: #fff;
+    font-size: 1rem;
+    border: none;
+    border-radius: 7px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.16s;
+}
+
+    .add-drug-form .submit-btn:disabled {
+        background: #b4c8e6;
+        cursor: not-allowed;
+    }
+
+    .add-drug-form .submit-btn:hover:enabled {
+        background: #174da3;
+    }
+
+/* Delete Drug Modal */
+.delete-modal-title {
+    font-size: 1.24rem;
+    font-weight: 700;
+    color: #e23b3b;
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.delete-list {
+    max-height: 220px;
+    overflow-y: auto;
+    margin-bottom: 18px;
+    border: 1px solid #e5eaf2;
+    border-radius: 8px;
+    padding: 12px 8px 8px 8px;
+    background: #fafbfe;
+}
+
+.delete-list-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 7px;
+    font-size: 1.07rem;
+    color: #2d3748;
+}
+
+    .delete-list-item:last-child {
+        margin-bottom: 0;
+    }
+
+.delete-checkbox {
+    accent-color: #ff5050;
+    width: 17px;
+    height: 17px;
+}
+
+/* Delete modal action buttons */
+.delete-action-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.delete-modal-btn {
+    padding: 8px 18px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 7px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s;
+}
+
+    .delete-modal-btn.cancel {
+        background: #f0f4fa;
+        color: #2263db;
+    }
+
+        .delete-modal-btn.cancel:hover {
+            background: #d6e0f3;
+        }
+
+    .delete-modal-btn.delete {
+        background: #ff5050;
+        color: #fff;
+    }
+
+        .delete-modal-btn.delete:hover {
+            background: #d63535;
+        }
+
+/* Toast message */
+.toast-message,
+.toast-message-main {
+    margin-top: 16px;
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 600;
+    background: #e9f7ef;
+    color: #257a45;
+    font-size: 1.06rem;
+}
+
+    .toast-message.error,
+    .toast-message-main.error {
+        background: #ffeded;
+        color: #e23b3b;
+    }
+
+.toast-message-main {
+    margin: 32px auto 0 auto;
+    max-width: 400px;
+}
+
+/* Extra table spacing for action column */
+.inventory-table th:last-child,
+.inventory-table td:last-child {
+    text-align: right;
+    width: 120px;
+}
