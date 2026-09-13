@@ -36,10 +36,10 @@ const InventoryManagement = () => {
         setSubmitting(true);
         setToast({ show: false, message: "", type: "" });
         try {
-            await apiSend("/drugs", "POST", {
+               await apiSend("/drugs", "POST", {
                 name: form.name,
-                quantity: Number(form.quantity),
-                price: Number(form.price)
+                price: Number(form.price),
+                openingStock: Number(form.quantity)
             });
             setShowModal(false);
             setForm({ name: "", quantity: "", price: "" });
@@ -161,12 +161,13 @@ const InventoryManagement = () => {
                                         <label htmlFor={`delete-drug-${drug.id}`}>
                                             {drug.name} (Stock: {drug.quantity})
                                         </label>
+                                        <br/><br/>
                                     </div>
                                 ))}
                             </div>
                             <button
                                 type="submit"
-                                className="submit-btn"
+                                className="delete-confirm-btn"
                                 disabled={selectedDrugs.length === 0}
                             >
                                 Delete Selected

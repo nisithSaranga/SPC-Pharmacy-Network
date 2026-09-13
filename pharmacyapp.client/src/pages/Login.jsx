@@ -53,7 +53,7 @@ const Login = ({ onLogin }) => {
                 <div className="login-subtitle">Sign in to your account</div>
                 <form className="login-form" onSubmit={handleSubmit} autoComplete="off">
                     <div>
-                        <label className="login-label" htmlFor="login-username">Username</label>
+                        <label className="login-label" htmlFor="login-username">Username&nbsp;</label>
                         <input
                             id="login-username"
                             className="login-input"
@@ -66,7 +66,7 @@ const Login = ({ onLogin }) => {
                         />
                     </div>
                     <div>
-                        <label className="login-label" htmlFor="login-password">Password</label>
+                        <label className="login-label" htmlFor="login-password">Password&nbsp;</label>
                         <input
                             id="login-password"
                             className="login-input"

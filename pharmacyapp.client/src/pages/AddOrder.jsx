@@ -3,9 +3,11 @@ import "./AddOrder.css"; // Reuse AddSupplier/AddOrder styles
 import { apiGet, apiSend } from "../api";
 
 const AddOrder = () => {
-    const [form, setForm] = useState({ pharmacyName: "", drugId: "", quantity: 1 });
+    const [form, setForm] = useState({ pharmacyId: "", drugId: "", quantity: 1 });
     const [drugs, setDrugs] = useState([]);
+    const [pharmacies, setPharmacies] = useState([]);
     const [loadingDrugs, setLoadingDrugs] = useState(true);
+    const [loadingPharmacies, setLoadingPharmacies] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [toast, setToast] = useState({ show: false, message: "", type: "" });
 
@@ -15,6 +17,14 @@ const AddOrder = () => {
             .then(data => setDrugs(data))
             .catch(() => setToast({ show: true, message: "Error loading drugs!", type: "error" }))
             .finally(() => setLoadingDrugs(false));
+    }, []);
+
+    useEffect(() => {
+        // Fetch registered pharmacies for dropdown
+        apiGet("/pharmacies")
+            .then(data => setPharmacies(data))
+            .catch(() => setPharmacies([]))
+            .finally(() => setLoadingPharmacies(false));
     }, []);
 
     const handleChange = (e) => {
@@ -29,9 +39,9 @@ const AddOrder = () => {
             await apiSend("/orders", "POST", {
                 drugId: Number(form.drugId),
                 quantity: Number(form.quantity),
-                pharmacyName: form.pharmacyName,
+                pharmacyId: Number(form.pharmacyId),
             });
-            setForm({ pharmacyName: "", drugId: "", quantity: 1 });
+            setForm({ pharmacyId: "", drugId: "", quantity: 1 });
             setToast({ show: true, message: "Order placed successfully!", type: "success" });
         } catch (err) {
             setToast({
@@ -53,13 +63,21 @@ const AddOrder = () => {
             <form onSubmit={handleSubmit} className="add-supplier-form">
                 <div className="form-row">
                     <div className="form-group">
-                        <label>Pharmacy Name</label>
-                        <input
-                            name="pharmacyName"
-                            value={form.pharmacyName}
+                        <label>Pharmacy</label>
+                        <select
+                            name="pharmacyId"
+                            value={form.pharmacyId}
                             onChange={handleChange}
                             required
-                        />
+                            disabled={loadingPharmacies}
+                        >
+                            <option value="">{loadingPharmacies ? "Loading pharmacies..." : "Select Pharmacy"}</option>
+                            {pharmacies.map(pharmacy => (
+                                <option key={pharmacy.id} value={pharmacy.id}>
+                                    {pharmacy.name}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                     <div className="form-group">
                         <label>Drug</label>
@@ -91,7 +109,7 @@ const AddOrder = () => {
                     </div>
                 </div>
                 <div className="form-submit-row">
-                    <button type="submit" className="submit-btn" disabled={submitting || loadingDrugs}>
+                    <button type="submit" className="submit-btn" disabled={submitting || loadingDrugs || loadingPharmacies}>
                         {submitting ? "Placing..." : "Place Order"}
                     </button>
                 </div>
@@ -104,4 +122,3 @@ const AddOrder = () => {
 };
 
 export default AddOrder;
-

@@ -1,5 +1,6 @@
 ﻿import React, { useState } from "react";
 import "./AddSupplier.css";
+import { apiSend } from "../api";
 
 const AddSupplier = () => {
     const [form, setForm] = useState({
@@ -19,18 +20,13 @@ const AddSupplier = () => {
     };
 
     // Handle form submit
-    const handleSubmit = async (e) => {
+       const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitting(true);
         setToast({ show: false, message: "", type: "" });
 
         try {
-            const res = await fetch("https://localhost:7216/api/suppliers", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form),
-            });
-            if (!res.ok) throw new Error("Failed to register supplier");
+            await apiSend("/suppliers", "POST", form);
             setForm({ name: "", address: "", email: "", phone: "", contactPerson: "" });
             setToast({ show: true, message: "Supplier registered successfully!", type: "success" });
         } catch (err) {

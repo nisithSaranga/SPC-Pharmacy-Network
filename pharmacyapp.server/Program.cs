@@ -42,7 +42,7 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<PharmacyContext>();
     db.Database.Migrate();
-
+    
     if (!db.Users.Any())
     {
         db.Users.Add(new User

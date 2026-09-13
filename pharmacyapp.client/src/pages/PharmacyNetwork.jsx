@@ -86,14 +86,12 @@ const PharmacyNetwork = () => {
     return (
         <div className="pharmacy-network-wrapper">
             {/* Back Button */}
-            <div style={{ padding: "32px 0 0 40px" }}>
-                <button
-                    className="back-btn"
-                    onClick={() => navigate("/dashboard")}
-                >
-                    ← Back to Home
-                </button>
-            </div>
+                        <button
+                className="back-home-btn"
+                onClick={() => navigate("/dashboard")}
+            >
+                &larr; Back to Home
+            </button>
             <header className="pharmacy-network-header">
                 <h1>Pharmacy Network</h1>
                 <button className="add-btn" onClick={() => setShowAdd(true)}>+ Add Pharmacy</button>

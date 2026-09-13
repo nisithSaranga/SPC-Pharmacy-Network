@@ -97,7 +97,7 @@
 
 .dashboard-bottom-row {
     display: grid;
-    grid-template-columns: 2.2fr 1.1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 28px;
     margin-top: 12px;
 }
@@ -275,18 +275,14 @@
 }
 
 .logout-btn {
-    background: #ff4d4f;
+    background: #e53935;
     color: #fff;
     border: none;
-    border-radius: 7px;
-    padding: 0.7rem 1.2rem;
-    font-weight: 600;
-    margin-left: 14px;
+    border-radius: 6px;
+    padding: 8px 18px;
+    font-size: 15px;
     cursor: pointer;
-    transition: background 0.18s;
 }
-
-    .logout-btn:hover {
-        background: #c82f2f;
-    }
-
+.logout-btn:hover {
+    background: #c62828;
+}

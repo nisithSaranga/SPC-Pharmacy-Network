@@ -4,10 +4,12 @@
     {
         public int Id { get; set; }
         public int DrugId { get; set; }
-        public Drug? Drug { get; set; }  // Navigation property (optional)
-        public int? Quantity { get; set; }         // Not nullable. An order must have a quantity!
-        public string? PharmacyName { get; set; }  // Not nullable. Always required.
-        public DateTime? OrderDate { get; set; }   // Not nullable. Always provided.
-        public string? Status { get; set; }        // Optional but recommended: "Pending", "Completed", etc.
+        public Drug? Drug { get; set; }  
+        public int? Quantity { get; set; }         
+        public int PharmacyId { get; set; }
+        public Pharmacy? Pharmacy { get; set; }  
+        public DateTime? OrderDate { get; set; }   
+        public string? Status { get; set; }        
+        public string? Username { get; set; }
     }
 }

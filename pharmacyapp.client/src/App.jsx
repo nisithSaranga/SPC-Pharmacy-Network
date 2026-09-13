@@ -5,13 +5,13 @@ import Login from "./pages/Login";
 import UserDashboard from "./pages/UserDashboard";
 import PharmacyNetwork from "./pages/PharmacyNetwork";
 import { useState, useEffect } from "react";
+import OrderManagement from "./pages/OrderManagement";
+import SupplierManagement from "./pages/SupplierManagement";
 
 function App() {
-    // Track login state and role
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
     const [role, setRole] = useState(localStorage.getItem("role") || "");
 
-    // Update state if storage changes (e.g., another tab logs in/out)
     useEffect(() => {
         const onStorage = () => {
             setIsLoggedIn(!!localStorage.getItem("token"));
@@ -21,7 +21,6 @@ function App() {
         return () => window.removeEventListener("storage", onStorage);
     }, []);
 
-    // Log out helper
     const handleLogout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("username");
@@ -30,28 +29,25 @@ function App() {
         setRole("");
     };
 
+    const homeRedirect = isLoggedIn
+        ? (role === "admin"
+            ? <Navigate to="/dashboard" replace />
+            : <Navigate to="/user-dashboard" replace />)
+        : <Navigate to="/login" replace />;
+
+    const adminOnly = (element) =>
+        isLoggedIn && role === "admin" ? element : <Navigate to="/login" replace />;
+
     return (
         <Router>
             <Routes>
-                {/* Home: redirect to correct dashboard or login */}
-                <Route
-                    path="/"
-                    element={
-                        isLoggedIn
-                            ? (role === "admin"
-                                ? <Navigate to="/dashboard" replace />
-                                : <Navigate to="/user-dashboard" replace />)
-                            : <Navigate to="/login" replace />
-                    }
-                />
-                {/* Login route */}
+                <Route path="/" element={homeRedirect} />
+
                 <Route
                     path="/login"
                     element={
                         isLoggedIn
-                            ? (role === "admin"
-                                ? <Navigate to="/dashboard" replace />
-                                : <Navigate to="/user-dashboard" replace />)
+                            ? homeRedirect
                             : <Login onLogin={() => {
                                 setIsLoggedIn(true);
                                 setRole(localStorage.getItem("role") || "");
@@ -59,61 +55,11 @@ function App() {
                     }
                 />
 
-                {/* Admin Dashboard */}
                 <Route
                     path="/dashboard"
-                    element={
-                        isLoggedIn && role === "admin"
-                            ? <Dashboard onLogout={handleLogout} />
-                            : <Navigate to="/login" replace />
-                    }
-                />
-                {/* User Dashboard */}
-                <Route
-                    path="/user-dashboard"
-                    element={
-                        isLoggedIn && role === "user"
-                            ? <UserDashboard onLogout={handleLogout} />
-                            : <Navigate to="/login" replace />
-                    }
-                />
-                {/* Inventory (Admins only, or both if you want) */}
-                <Route
-                    path="/inventory"
-                    element={
-                        isLoggedIn && role === "admin"
-                            ? <InventoryManagement />
-                            : <Navigate to="/login" replace />
-                    }
-                />
-                <Route
-                    path="/pharmacy-network"
-                    element={
-                        isLoggedIn && role === "admin"
-                            ? <PharmacyNetwork />
-                            : <Navigate to="/login" replace />
-                    }
+                    element={adminOnly(<Dashboard onLogout={handleLogout} />)}
                 />
 
-                {/* Fallback: always redirect correctly */}
-                <Route
-                    path="*"
-                    element={
-                        isLoggedIn
-                            ? (role === "admin"
-                                ? <Navigate to="/dashboard" replace />
-                                : <Navigate to="/user-dashboard" replace />)
-                            : <Navigate to="/login" replace />
-                    }
-                />
-                <Route
-                    path="/dashboard"
-                    element={
-                        isLoggedIn && role === "admin"
-                            ? <Dashboard onLogout={handleLogout} />
-                            : <Navigate to="/login" replace />
-                    }
-                />
                 <Route
                     path="/user-dashboard"
                     element={
@@ -123,11 +69,15 @@ function App() {
                     }
                 />
 
+                <Route path="/inventory" element={adminOnly(<InventoryManagement />)} />
+                <Route path="/pharmacy-network" element={adminOnly(<PharmacyNetwork />)} />
+
+                <Route path="*" element={homeRedirect} />
+                <Route path="/order-management" element={adminOnly(<OrderManagement />)} />
+                <Route path="/supplier-management" element={adminOnly(<SupplierManagement />)} />
             </Routes>
         </Router>
     );
 }
 
 export default App;
-
-

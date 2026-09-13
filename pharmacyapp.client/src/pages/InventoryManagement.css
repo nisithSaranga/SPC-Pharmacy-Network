@@ -1,7 +1,7 @@
 ﻿.inventory-main-bg {
-    background: #f6faff;
+    background: linear-gradient(120deg, #eaf4fb 0%, #fafdff 100%);
     min-height: 100vh;
-    padding: 40px 0 0 0;
+    padding: 32px 40px 64px 40px;
 }
 
 /* Header row with Add/Delete buttons */
@@ -9,9 +9,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 0 auto 24px auto;
-    max-width: 850px;
-    padding: 0 18px;
+    margin: 28px 0 18px 0;
 }
 
 .inventory-title {
@@ -78,8 +76,6 @@
     border-radius: 18px;
     box-shadow: 0 3px 16px #2263db11;
     padding: 28px 26px;
-    max-width: 850px;
-    margin: 0 auto;
     min-height: 300px;
 }
 
@@ -263,6 +259,26 @@
     height: 17px;
 }
 
+.delete-confirm-btn {
+    background: #e53935;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+    .delete-confirm-btn:hover {
+        background: #c62828;
+    }
+
+    .delete-confirm-btn:disabled {
+        background: #e0a0a0;
+        cursor: not-allowed;
+    }
+    
 /* Delete modal action buttons */
 .delete-action-row {
     display: flex;

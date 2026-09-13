@@ -1,46 +1,55 @@
 ﻿import React, { useState, useEffect } from "react";
+import { apiGet } from "../api";
 import AddOrder from "./AddOrder"; // Import your order form/modal
 import "./UserDashboard.css"; // (optional, style as you like)
 
 const UserDashboard = ({ onLogout }) => {
     const username = localStorage.getItem("username") || "";
     const [orders, setOrders] = useState([]);
+    const [drugs, setDrugs] = useState([]);
     const [showOrderModal, setShowOrderModal] = useState(false);
     const [search, setSearch] = useState("");
-    const [drugResults, setDrugResults] = useState([]);
+    const [searched, setSearched] = useState(false);
 
     // Fetch user's orders
     useEffect(() => {
-        fetch(`https://localhost:7216/api/orders?username=${username}`)
-            .then(res => res.json())
+        apiGet("/orders")
             .then(setOrders)
             .catch(() => setOrders([]));
     }, [showOrderModal, username]); // Refresh after new order
 
+    // Load drug catalogue for searching
+    useEffect(() => {
+        apiGet("/drugs")
+            .then(setDrugs)
+            .catch(() => setDrugs([]));
+    }, []);
+
     // Search drugs
-    const handleSearch = async (e) => {
+    const handleSearch = (e) => {
         e.preventDefault();
-        if (!search) return;
-        fetch(`https://localhost:7216/api/drugs?search=${search}`)
-            .then(res => res.json())
-            .then(setDrugResults)
-            .catch(() => setDrugResults([]));
+        setSearched(true);
     };
+
+    const drugResults = search
+        ? drugs.filter(d => (d.name || "").toLowerCase().includes(search.toLowerCase()))
+        : [];
 
     return (
         <div className="user-dashboard-bg">
             {/* Header */}
             <header className="user-dashboard-header">
                 <img src="/spc-logo.png" alt="SPC Logo" className="dashboard-logo" />
-                <span className="welcome-text">Welcome, {username} (user)</span>
+                <span className="welcome-text">Welcome&nbsp;{username}</span>
                 <button className="logout-btn" onClick={onLogout}>Logout</button>
             </header>
             {/* Cards Row */}
             <div className="user-dashboard-cards-row">
                 {/* Order Drugs */}
-                <div className="user-dashboard-card" onClick={() => setShowOrderModal(true)}>
+                <div className="user-dashboard-card">
                     <div className="card-title">Order Drugs</div>
                     <div>Place new pharmacy orders</div>
+                    <button className="card-action-btn" onClick={() => setShowOrderModal(true)}>+ New Order</button>
                 </div>
                 {/* My Orders */}
                 <div className="user-dashboard-card">
@@ -86,10 +95,10 @@ const UserDashboard = ({ onLogout }) => {
                     <div>
                         {drugResults.map(drug => (
                             <div key={drug.id} className="drug-result">
-                                <strong>{drug.name}</strong> ({drug.brand}) - {drug.stock} in stock
+                                <strong>{drug.name}</strong> - {drug.quantity} in stock
                             </div>
                         ))}
-                        {drugResults.length === 0 && search && <div>No drugs found.</div>}
+                        {drugResults.length === 0 && searched && search && <div>No drugs found.</div>}
                     </div>
                 </div>
             </div>

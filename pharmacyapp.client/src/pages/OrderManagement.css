@@ -1,0 +1,241 @@
+.order-mgmt-bg {
+    min-height: 100vh;
+    background: linear-gradient(120deg, #eaf4fb 0%, #fafdff 100%);
+    padding: 32px 40px;
+}
+
+.back-home-btn {
+    background: #fff;
+    border: 1px solid #d6e2f0;
+    border-radius: 7px;
+    padding: 8px 18px;
+    color: #225288;
+    font-weight: 600;
+    cursor: pointer;
+}
+.back-home-btn:hover{
+    background:#d6e2f0;
+}
+.order-mgmt-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 28px 0 18px 0;
+}
+
+.order-mgmt-title {
+    color: #205086;
+    font-size: 1.6rem;
+    margin: 0;
+}
+
+.order-mgmt-card {
+    background: #fff;
+    border-radius: 17px;
+    box-shadow: 0 4px 24px 0 rgba(36,80,184,0.10);
+    padding: 24px;
+    overflow-x: auto;
+}
+
+.order-mgmt-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.98rem;
+}
+
+    .order-mgmt-table th,
+    .order-mgmt-table td {
+        padding: 10px 12px;
+        text-align: left;
+        border-bottom: 1px solid #e9ecf2;
+    }
+
+    .order-mgmt-table th {
+        background: #f2f6fc;
+        color: #225288;
+    }
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.status-pending {
+    background: #fff4d6;
+    color: #8a6100;
+}
+
+.status-approved {
+    background: #dff5e3;
+    color: #1c6b2f;
+}
+
+.status-rejected {
+    background: #fde3e3;
+    color: #a12020;
+}
+
+.approve-btn,
+.reject-btn {
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+.approve-btn {
+    background: #2e9e4f;
+    color: #fff;
+}
+
+    .approve-btn:hover {
+        background: #237a3d;
+    }
+
+.reject-btn {
+    background: #ff5858;
+    color: #fff;
+}
+
+    .reject-btn:hover {
+        background: #d32f2f;
+    }
+
+.no-action {
+    color: #b0b0b0;
+}
+
+.loading-msg {
+    padding: 24px;
+    color: #666;
+}
+
+.toast-message-main {
+    margin-top: 18px;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+    .toast-message-main.success {
+        background: #dff5e3;
+        color: #1c6b2f;
+    }
+
+    .toast-message-main.error {
+        background: #fde3e3;
+        color: #a12020;
+    }
+
+.modal-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(56, 69, 110, 0.25);
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 32px 34px 28px 34px;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px 0 rgba(36,80,184,0.18);
+    min-width: 520px;
+    max-width: 92vw;
+    position: relative;
+}
+
+    .modal-content h3 {
+        color: #205086;
+        font-size: 1.35rem;
+        margin: 0 0 22px 0;
+    }
+
+.close-modal-btn {
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    font-size: 1.7rem;
+    line-height: 1;
+    color: #7b8ba3;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+    .close-modal-btn:hover {
+        color: #334e6f;
+    }
+
+.form-row {
+    display: flex;
+    gap: 18px;
+    margin-bottom: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+    .form-group label {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: #4a5b73;
+        margin-bottom: 6px;
+    }
+
+    .form-group input {
+        padding: 10px 12px;
+        border: 1px solid #d6e2f0;
+        border-radius: 7px;
+        font-size: 0.97rem;
+        color: #1f2d3d;
+        outline: none;
+        transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+        .form-group input:focus {
+            border-color: #2865c6;
+            box-shadow: 0 0 0 3px rgba(40,101,198,0.12);
+        }
+
+.form-submit-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid #eef2f7;
+}
+
+    .form-submit-row .approve-btn {
+        padding: 10px 26px;
+        font-size: 0.97rem;
+        margin-right: 0;
+    }
+
+.add-btn {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 22px;
+    font-weight: 600;
+    font-size: 0.97rem;
+    cursor: pointer;
+}
+
+    .add-btn:hover {
+        background: #1d4ed8;
+    }

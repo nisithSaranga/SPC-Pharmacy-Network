@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pharmacyapp.server.Data;
 
@@ -11,9 +12,11 @@ using pharmacyapp.server.Data;
 namespace pharmacyapp.server.Migrations
 {
     [DbContext(typeof(PharmacyContext))]
-    partial class PharmacyContextModelSnapshot : ModelSnapshot
+    [Migration("20260913143933_ReplacePharmacyNameWithPharmacyId")]
+    partial class ReplacePharmacyNameWithPharmacyId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,21 +33,16 @@ namespace pharmacyapp.server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("Id");
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
 
-                    b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                    b.HasKey("Id");
 
                     b.ToTable("Drugs");
                 });
@@ -114,7 +112,6 @@ namespace pharmacyapp.server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("Revenue")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Status")
@@ -126,40 +123,6 @@ namespace pharmacyapp.server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Pharmacies");
-                });
-
-            modelBuilder.Entity("pharmacyapp.server.Models.StockMovement", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DrugId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Reason")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DrugId");
-
-                    b.ToTable("StockMovements");
                 });
 
             modelBuilder.Entity("pharmacyapp.server.Models.Supplier", b =>
@@ -229,17 +192,6 @@ namespace pharmacyapp.server.Migrations
                     b.Navigation("Drug");
 
                     b.Navigation("Pharmacy");
-                });
-
-            modelBuilder.Entity("pharmacyapp.server.Models.StockMovement", b =>
-                {
-                    b.HasOne("pharmacyapp.server.Models.Drug", "Drug")
-                        .WithMany()
-                        .HasForeignKey("DrugId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Drug");
                 });
 #pragma warning restore 612, 618
         }

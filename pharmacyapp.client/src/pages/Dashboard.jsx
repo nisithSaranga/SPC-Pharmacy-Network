@@ -1,13 +1,13 @@
 ﻿import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
-import AddSupplier from "./AddSupplier";
+import { apiGet } from "../api";
 import AddOrder from "./AddOrder";
 
-const Dashboard = () => {
-    // Only one modal can be open at a time: "supplier" or "order"
-    const [activeModal, setActiveModal] = useState(null); // null | "supplier" | "order"
+const Dashboard = ({ onLogout }) => {
+    const [activeModal, setActiveModal] = useState(null);
     const [toast, setToast] = useState({ show: false, message: "", type: "" });
+    const [stats, setStats] = useState({ suppliers: null, orders: null, drugs: null, pharmacies: null });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,26 +23,37 @@ const Dashboard = () => {
             setTimeout(() => setToast({ show: false, message: "", type: "" }), 1800);
         }
     }, []);
-    // Helpers
-    const openSupplierModal = () => setActiveModal("supplier");
-    const openOrderModal = () => setActiveModal("order");
+
+    useEffect(() => {
+        Promise.all([
+            apiGet("/suppliers").catch(() => []),
+            apiGet("/orders").catch(() => []),
+            apiGet("/drugs").catch(() => []),
+            apiGet("/pharmacies").catch(() => [])
+        ]).then(([suppliers, orders, drugs, pharmacies]) => {
+            setStats({
+                suppliers: suppliers.length,
+                orders: orders.length,
+                drugs: drugs.length,
+                pharmacies: pharmacies.length
+            });
+        });
+    }, [activeModal]);
+
     const closeModal = () => setActiveModal(null);
+
+    const handleLogout = () => {
+        sessionStorage.removeItem("welcomed");
+        if (onLogout) onLogout();
+        navigate("/login", { replace: true });
+    };
+
+    const show = (v) => (v === null ? "—" : v.toLocaleString());
 
     return (
         <div className="dashboard-bg">
-            {/* Toast */}
             {toast.show && <div className={`toast-message ${toast.type}`}>{toast.message}</div>}
 
-            {/* Modal: Add Supplier */}
-            {activeModal === "supplier" && (
-                <div className="modal-bg">
-                    <div className="modal-content">
-                        <button className="close-modal-btn" onClick={closeModal}>×</button>
-                        <AddSupplier />
-                    </div>
-                </div>
-            )}
-            {/* Modal: Add Order */}
             {activeModal === "order" && (
                 <div className="modal-bg">
                     <div className="modal-content">
@@ -63,11 +74,7 @@ const Dashboard = () => {
                 </div>
                 <div className="dashboard-header-right">
                     <span className="dashboard-status">System Online</span>
-                    <input
-                        type="text"
-                        placeholder="Search Drugs"
-                        className="dashboard-search"
-                    />
+                    <button className="logout-btn" onClick={handleLogout}>Logout</button>
                 </div>
             </header>
 
@@ -76,23 +83,19 @@ const Dashboard = () => {
                 <div className="dashboard-cards-row">
                     <div className="dashboard-card">
                         <div className="dashboard-card-label">Registered Suppliers</div>
-                        <div className="dashboard-card-value">248</div>
-                        <div className="dashboard-card-growth up">+12%</div>
+                        <div className="dashboard-card-value">{show(stats.suppliers)}</div>
                     </div>
                     <div className="dashboard-card">
-                        <div className="dashboard-card-label">Active Orders</div>
-                        <div className="dashboard-card-value">89</div>
-                        <div className="dashboard-card-growth up">+5%</div>
+                        <div className="dashboard-card-label">Orders Placed</div>
+                        <div className="dashboard-card-value">{show(stats.orders)}</div>
                     </div>
                     <div className="dashboard-card">
                         <div className="dashboard-card-label">Stock Items</div>
-                        <div className="dashboard-card-value">1,247</div>
-                        <div className="dashboard-card-growth up">+8%</div>
+                        <div className="dashboard-card-value">{show(stats.drugs)}</div>
                     </div>
                     <div className="dashboard-card">
-                        <div className="dashboard-card-label">Manufacturing Plants</div>
-                        <div className="dashboard-card-value">12</div>
-                        <div className="dashboard-card-growth up">+2%</div>
+                        <div className="dashboard-card-label">Linked Pharmacies</div>
+                        <div className="dashboard-card-value">{show(stats.pharmacies)}</div>
                     </div>
                 </div>
 
@@ -101,18 +104,15 @@ const Dashboard = () => {
                     <div className="dashboard-panel services-panel">
                         <div className="dashboard-tabs">
                             <button className="dashboard-tab active">Services</button>
-                            <button className="dashboard-tab">Suppliers</button>
-                            <button className="dashboard-tab">Inventory</button>
-                            <button className="dashboard-tab">Orders</button>
                         </div>
                         <div className="dashboard-service-cards">
                             <div
                                 className="dashboard-service-card"
-                                onClick={openSupplierModal}
+                                onClick={() => navigate("/supplier-management")}
                                 style={{ cursor: "pointer" }}
                             >
-                                <div className="service-card-title">Supplier Registration</div>
-                                <div className="service-card-desc">Register new suppliers</div>
+                                <div className="service-card-title">Supplier Management</div>
+                                <div className="service-card-desc">Register and view suppliers</div>
                             </div>
                             <div
                                 className="dashboard-service-card"
@@ -124,7 +124,7 @@ const Dashboard = () => {
                             </div>
                             <div
                                 className="dashboard-service-card"
-                                onClick={openOrderModal}
+                                onClick={() => navigate("/order-management")}
                                 style={{ cursor: "pointer" }}
                             >
                                 <div className="service-card-title">Order Management</div>
@@ -139,26 +139,6 @@ const Dashboard = () => {
                                 <div className="service-card-desc">Manage linked pharmacies</div>
                             </div>
                         </div>
-                    </div>
-                    {/* RECENT ACTIVITIES */}
-                    <div className="dashboard-panel recent-panel">
-                        <div className="panel-title">Recent Activities</div>
-                        <div className="panel-subtitle">Latest system activities and updates</div>
-                        <ul className="recent-list">
-                            <li>New supplier registered <span className="recent-time">(2 hours ago)</span></li>
-                            <li>Stock updated <span className="recent-time">(4 hours ago)</span></li>
-                            <li>Order placed <span className="recent-time">(6 hours ago)</span></li>
-                            <li>Tender published <span className="recent-time">(1 day ago)</span></li>
-                        </ul>
-                    </div>
-                    {/* QUICK ACTIONS */}
-                    <div className="dashboard-panel actions-panel">
-                        <div className="panel-title">Quick Actions</div>
-                        <ul className="actions-list">
-                            <li><button className="action-link">Publish New Tender</button></li>
-                            <li><button className="action-link">Search Drug Catalog</button></li>
-                            <li><button className="action-link">View Reports</button></li>
-                        </ul>
                     </div>
                 </div>
             </main>
