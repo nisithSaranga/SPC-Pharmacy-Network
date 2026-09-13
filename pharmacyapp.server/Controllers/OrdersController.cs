@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using pharmacyapp.server.Data;
 using pharmacyapp.server.Models;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace pharmacyapp.server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class OrdersController : ControllerBase
     {
         private readonly PharmacyContext _context;

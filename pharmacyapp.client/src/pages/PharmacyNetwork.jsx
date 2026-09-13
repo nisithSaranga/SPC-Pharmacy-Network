@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiGet, apiSend } from "../api";
 import "./PharmacyNetwork.css";
 
 const PharmacyNetwork = () => {
@@ -25,9 +26,8 @@ const PharmacyNetwork = () => {
         integrationStatus: "Pending",
     });
 
-    useEffect(() => {
-        fetch("https://localhost:7216/api/pharmacies")
-            .then(res => res.json())
+        useEffect(() => {
+        apiGet("/pharmacies")
             .then(setPharmacies)
             .catch(() => alert("Error loading pharmacies"))
             .finally(() => setLoading(false));
@@ -51,16 +51,10 @@ const PharmacyNetwork = () => {
     });
 
     const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
-    const handleSubmit = async e => {
+      const handleSubmit = async e => {
         e.preventDefault();
         try {
-            const res = await fetch("https://localhost:7216/api/pharmacies", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form),
-            });
-            if (!res.ok) throw new Error();
-            const newPharmacy = await res.json();
+            const newPharmacy = await apiSend("/pharmacies", "POST", form);
             setPharmacies(phs => [...phs, newPharmacy]);
             setShowAdd(false);
             setForm({

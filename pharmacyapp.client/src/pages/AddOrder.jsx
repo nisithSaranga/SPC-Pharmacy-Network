@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from "react";
 import "./AddOrder.css"; // Reuse AddSupplier/AddOrder styles
+import { apiGet, apiSend } from "../api";
 
 const AddOrder = () => {
     const [form, setForm] = useState({ pharmacyName: "", drugId: "", quantity: 1 });
@@ -8,13 +9,9 @@ const AddOrder = () => {
     const [submitting, setSubmitting] = useState(false);
     const [toast, setToast] = useState({ show: false, message: "", type: "" });
 
-    useEffect(() => {
+       useEffect(() => {
         // Fetch drug list for dropdown
-        fetch("https://localhost:7216/api/drugs")
-            .then(res => {
-                if (!res.ok) throw new Error("Failed to fetch drugs");
-                return res.json();
-            })
+        apiGet("/drugs")
             .then(data => setDrugs(data))
             .catch(() => setToast({ show: true, message: "Error loading drugs!", type: "error" }))
             .finally(() => setLoadingDrugs(false));
@@ -24,21 +21,16 @@ const AddOrder = () => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = async (e) => {
+      const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitting(true);
         setToast({ show: false, message: "", type: "" });
         try {
-            const res = await fetch("https://localhost:7216/api/orders", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    drugId: Number(form.drugId),
-                    quantity: Number(form.quantity),
-                    pharmacyName: form.pharmacyName,
-                }),
+            await apiSend("/orders", "POST", {
+                drugId: Number(form.drugId),
+                quantity: Number(form.quantity),
+                pharmacyName: form.pharmacyName,
             });
-            if (!res.ok) throw new Error("Order failed!");
             setForm({ pharmacyName: "", drugId: "", quantity: 1 });
             setToast({ show: true, message: "Order placed successfully!", type: "success" });
         } catch (err) {

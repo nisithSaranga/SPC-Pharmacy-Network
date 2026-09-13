@@ -1,8 +1,7 @@
 ﻿import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiGet, apiSend, apiDelete } from "../api";
 import "./InventoryManagement.css";
-
-const API_URL = "https://localhost:7216/api/drugs";
 
 const InventoryManagement = () => {
     const navigate = useNavigate();
@@ -15,11 +14,9 @@ const InventoryManagement = () => {
     const [toast, setToast] = useState({ show: false, message: "", type: "" });
     const [selectedDrugs, setSelectedDrugs] = useState([]);
 
-    // Fetch drugs
     const fetchDrugs = () => {
         setLoading(true);
-        fetch(API_URL)
-            .then(res => res.json())
+        apiGet("/drugs")
             .then(data => setDrugs(data))
             .catch(() => setDrugs([]))
             .finally(() => setLoading(false));
@@ -29,28 +26,21 @@ const InventoryManagement = () => {
         fetchDrugs();
     }, []);
 
-    // Handle input changes
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm(f => ({ ...f, [name]: value }));
     };
 
-    // Handle form submit (add drug)
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitting(true);
         setToast({ show: false, message: "", type: "" });
         try {
-            const res = await fetch(API_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name: form.name,
-                    quantity: Number(form.quantity),
-                    price: Number(form.price)
-                }),
+            await apiSend("/drugs", "POST", {
+                name: form.name,
+                quantity: Number(form.quantity),
+                price: Number(form.price)
             });
-            if (!res.ok) throw new Error("Failed to add drug");
             setShowModal(false);
             setForm({ name: "", quantity: "", price: "" });
             setToast({ show: true, message: "Drug added successfully!", type: "success" });
@@ -67,11 +57,10 @@ const InventoryManagement = () => {
         }
     };
 
-    // Handle DELETE modal confirm
     const handleDeleteDrugs = async (e) => {
         e.preventDefault();
         for (let id of selectedDrugs) {
-            await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+            await apiDelete(`/drugs/${id}`);
         }
         setDrugs(drugs.filter(d => !selectedDrugs.includes(d.id)));
         setShowDeleteModal(false);
@@ -80,7 +69,6 @@ const InventoryManagement = () => {
         setTimeout(() => setToast({ show: false, message: "", type: "" }), 2200);
         fetchDrugs();
     };
-
     return (
         <div className="inventory-main-bg">
             {/* Back to Home */}

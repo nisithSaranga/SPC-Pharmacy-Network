@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity.Data;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using pharmacyapp.server.Data;
-using pharmacyapp.server.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace pharmacyapp.server.Controllers
 {
@@ -10,32 +12,47 @@ namespace pharmacyapp.server.Controllers
     public class AuthController : ControllerBase
     {
         private readonly PharmacyContext _context;
-        public AuthController(PharmacyContext context)
+        private readonly IConfiguration _config;
+
+        public AuthController(PharmacyContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
         }
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] pharmacyapp.server.Models.LoginRequest request)
-
         {
-            // Check username and password (your existing logic)
-            var user = _context.Users.SingleOrDefault(u => u.Username == request.Username && u.Password == request.Password);
+            if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
+                return BadRequest();
 
-            if (user == null)
+            var user = _context.Users.SingleOrDefault(u => u.Username == request.Username);
+
+            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
                 return Unauthorized();
 
-            // Generate token (if any), or just use a fake one for now
-            var token = "demo-token"; // Or your real JWT here
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            // **RETURN username and role now:**
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Name, user.Username!),
+                new Claim(ClaimTypes.Role, user.Role!)
+            };
+
+            var token = new JwtSecurityToken(
+                issuer: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Issuer"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(2),
+                signingCredentials: creds);
+
             return Ok(new
             {
-                token = token,
+                token = new JwtSecurityTokenHandler().WriteToken(token),
                 username = user.Username,
-                role = user.Role   // <-- Make sure your User entity/table has a Role column!
+                role = user.Role
             });
         }
-
     }
 }
