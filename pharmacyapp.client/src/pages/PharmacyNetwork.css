@@ -1,5 +1,5 @@
 ﻿.pharmacy-network-wrapper {
-    background: #f7fafd;
+    background: linear-gradient(120deg, #eaf4fb 0%, #fafdff 100%);
     min-height: 100vh;
     padding: 0 0 64px 0;
 }
@@ -10,6 +10,12 @@
     align-items: center;
     padding: 36px 40px 0 40px;
 }
+
+.pharmacy-network-header h1 {
+        color: #205086;
+        font-size: 1.6rem;
+        margin: 0;
+    }
 
 .add-btn {
     background: #2563eb;
@@ -23,16 +29,34 @@
 }
 
 .back-btn {
-    color: white;
+    position:relative;
+    background-color:#fff;
+    border: 1px solid #d6e2f0;
+    border-radius: 7px;
+    top: 30px;
+    left: 40px;
+    padding: 8px 18px;
+    font-size:1rem;
+    color: #225288;
     font-weight: 600;
-    font-size: 17px;
     cursor: pointer;
-    padding: 6px 14px 6px 0;
-    margin-bottom: 0;
-    outline: none;
-    transition: color 0.15s;
+}
+.back-btn:hover{
+    background:#d6e2f0;
 }
 
+/*.back-home-btn {
+    background: #fff;
+    border: 1px solid #d6e2f0;
+    border-radius: 7px;
+    padding: 8px 18px;
+    color: #225288;
+    font-weight: 600;
+    cursor: pointer;
+}
+.back-home-btn:hover{
+    background:#d6e2f0;
+}*/
 .pharmacy-filters {
     display: flex;
     gap: 16px;

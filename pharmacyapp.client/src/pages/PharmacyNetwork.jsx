@@ -87,7 +87,7 @@ const PharmacyNetwork = () => {
         <div className="pharmacy-network-wrapper">
             {/* Back Button */}
                         <button
-                className="back-home-btn"
+                className="back-btn"
                 onClick={() => navigate("/dashboard")}
             >
                 &larr; Back to Home
